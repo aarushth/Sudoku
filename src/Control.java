@@ -38,5 +38,11 @@ public class Control implements Frame.EventListener{
        board.setNum(board.getXPos(), board.getYPos(), n);
        frame.updateFrame();
     }
+
+    @Override
+    public void onResetEvent() {
+        board = new Board();
+        frame.updateFrame();
+    }
     
 }

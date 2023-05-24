@@ -10,6 +10,7 @@ public class Frame extends JFrame implements Panel.EventListener{
         public void onEnterEvent();
 		public void onArrowEvent(Direction d);
 		public void onNumberEvent(int n);
+		public void onResetEvent();
 	}
 
     private EventListener listener;
@@ -55,6 +56,8 @@ public class Frame extends JFrame implements Panel.EventListener{
 				listener.onArrowEvent(Direction.LEFT);
 			}else if(keyCode == KeyEvent.VK_RIGHT) {
 				listener.onArrowEvent(Direction.RIGHT);
+			}else if(keyCode == KeyEvent.VK_0) {
+				listener.onNumberEvent(0);
 			}else if(keyCode == KeyEvent.VK_1) {
 				listener.onNumberEvent(1);
 			}else if(keyCode == KeyEvent.VK_2) {
@@ -73,6 +76,8 @@ public class Frame extends JFrame implements Panel.EventListener{
 				listener.onNumberEvent(8);
 			}else if(keyCode == KeyEvent.VK_9) {
 				listener.onNumberEvent(9);
+			}else if(keyCode == KeyEvent.VK_R){
+				listener.onResetEvent();
 			}
 			
 		}

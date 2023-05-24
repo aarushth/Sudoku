@@ -2,14 +2,18 @@ import java.util.ArrayList;
 
 public class Solver {
     public void solve(Board board, Tile[][] b, Frame f){
+        //long start = System.currentTimeMillis();
         addMarks(board, b, f);
         while(checkBoxes(b, board, f) || checkMarks(b, board, f) || checkRows(b, board, f) || checkColumns(b, board, f));
+        bruteForce(board, f);
+        //long stop = System.currentTimeMillis();
+        //System.out.println(stop-start);
     }
 
     private void pause(Frame f){
         f.updateFrame();
         long start = System.currentTimeMillis();
-		while(start >= System.currentTimeMillis() - 50);
+		while(start >= System.currentTimeMillis() - 25);
     }
 
     private void addMarks(Board board, Tile[][] b, Frame f){
@@ -128,5 +132,63 @@ public class Solver {
             }
         }
         return shouldCont;
+    }
+
+    private boolean bruteForce(Board board, Frame f){
+        int num = 0;
+        Tile[][] clone = cloneBoard(board.getBoard());
+        int x = 0;
+        int y = 0;
+        int size = 10;
+        for(int i = 0; i < 9; i++){
+            for(int j = 0; j < 9; j++){
+                if(board.getBoard()[i][j].getNum() == 0 && board.getBoard()[i][j].getMarks().size() < size){
+                    x = i;
+                    y = j;
+                    size = board.getBoard()[i][j].getMarks().size();
+                }
+            }
+        }
+        boolean condition = true;
+        while(condition){
+            condition = false;
+            board.setNum(x, y, board.getBoard()[x][y].getMarks().get(num));
+            pause(f);
+            while(checkBoxes(board.getBoard(), board, f) || checkMarks(board.getBoard(), board, f) || checkRows(board.getBoard(), board, f) || checkColumns(board.getBoard(), board, f));
+            if(board.isFilled()){
+                return true;
+            }else if(board.isSolvable()){
+                if(bruteForce(board, f)){
+                    return true;
+                }else if(num < (size-1)){
+                    num++;
+                    board.setBoard(clone);
+                    addMarks(board, board.getBoard(), f);
+                    condition = true;
+                }else{
+                    return false;
+                }
+            }else{
+                if(num < (size-1)){
+                    num++;
+                    board.setBoard(clone);
+                    addMarks(board, board.getBoard(), f);
+                    condition = true;
+                }else{
+                    return false;
+                }
+            }
+        } 
+        return true;  
+    }
+
+    private Tile[][] cloneBoard(Tile[][] b){
+        Tile[][] clone = new Tile[9][9];
+        for(int i = 0; i < 9; i++){
+            for(int j = 0; j < 9; j++){
+                clone[i][j] = new Tile(b[i][j].getNum());
+            }
+        }
+        return clone;
     }
 }

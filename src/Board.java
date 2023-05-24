@@ -141,4 +141,29 @@ public class Board {
     public int getYPos(){
         return Ypos;
     }
+    public boolean isSolvable(){
+        for(int i = 0; i < 9; i++){
+            for(int j = 0; j < 9; j++){
+                if(board[i][j].getNum() == 0 && board[i][j].getMarks().size() == 0){
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    public boolean isFilled(){
+        for(int i = 0; i < 9; i++){
+            for(int j = 0; j < 9; j++){
+                if(board[i][j].getNum() == 0){
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+    public void setBoard(Tile[][] b) {
+        board = b;
+    }
+
 }
